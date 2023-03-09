@@ -1,6 +1,10 @@
 .interact:hover {
-    opacity: 80%;
+    opacity: 50%;
     cursor: pointer;
+}
+
+.interact {
+    transition: opacity 0.5s
 }
 
 .disable-select {

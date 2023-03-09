@@ -16,13 +16,7 @@ export default function Home () {
   const isMobile = useMobileCheck();
   const [scrollPosition, setScrollPosition] = useState(0);
   const [state, setState] = useState<"init"|"about"|"portfolio"|"connect">("init");
-  const [opacity, setOpacity] = useState(1);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setOpacity(1);
-    }, 250)
-  }, [state])
+  const [opacity, setOpacity] = useState(0);
 
   const { width, height } = useWindowDimensions();
   
@@ -47,21 +41,27 @@ export default function Home () {
   }[state];
   const boxHeight = _boxHeight > height - 64 ? height - 64 : _boxHeight;
 
-  const body = {
+  const [body, setBody] = useState(<Box />);
+  const _body = {
     init: <Init />,
     about: <About />,
     portfolio: <Portfolio />,
     connect: <Connect />,
   }[state];
 
+  useEffect(() => {
+    setTimeout(() => {
+      setBody(_body)
+      setOpacity(1)
+    }, 250);
+  }, [state])
+  
+
   const updateState = (tab) => {
     setState(tab)
-    /* if (tab !== state) {
-     *   setOpacity(0)
-     *   setTimeout(() => {
-     *     setState(tab)
-     *   }, 200)
-     * } */
+    if (tab !== state) {
+      setOpacity(0)
+    }
   }
   
   return (
@@ -146,42 +146,7 @@ const About = () => {
 
 const Portfolio = () => {
   return (
-    <Typography style={{ alignSelf: "start", overflow: "scroll" }}>
-      asldfjla jdflkja lskdflkasjdflk alksdjf lkasdflj al kdfj lkajdf lkajdflk asjdf
-      al skdfjlaksdfj lkasjdf lkajs dflkjasldkfjalskdfjalskdjflkasjd flkajs dlfkjaskdf
-      alskdfj laksjd flkasj dflk jalksdfjlkajsdlkfjalksd jflkasjd
-      flaks dflkajsd flkja sldkfj alksdfj lkasjd flkajsdf
-      <br />
-      <br />
-      asldfjla jdflkja lskdflkasjdflk alksdjf lkasdflj al kdfj lkajdf lkajdflk asjdf
-      al skdfjlaksdfj lkasjdf lkajs dflkjasldkfjalskdfjalskdjflkasjd flkajs dlfkjaskdf
-      alskdfj laksjd flkasj dflk jalksdfjlkajsdlkfjalksd jflkasjd
-      flaks dflkajsd flkja sldkfj alksdfj lkasjd flkajsdf
-      <br />
-      <br />
-      asldfjla jdflkja lskdflkasjdflk alksdjf lkasdflj al kdfj lkajdf lkajdflk asjdf
-      al skdfjlaksdfj lkasjdf lkajs dflkjasldkfjalskdfjalskdjflkasjd flkajs dlfkjaskdf
-      alskdfj laksjd flkasj dflk jalksdfjlkajsdlkfjalksd jflkasjd
-      flaks dflkajsd flkja sldkfj alksdfj lkasjd flkajsdf
-      <br />
-      <br />
-      asldfjla jdflkja lskdflkasjdflk alksdjf lkasdflj al kdfj lkajdf lkajdflk asjdf
-      al skdfjlaksdfj lkasjdf lkajs dflkjasldkfjalskdfjalskdjflkasjd flkajs dlfkjaskdf
-      alskdfj laksjd flkasj dflk jalksdfjlkajsdlkfjalksd jflkasjd
-      flaks dflkajsd flkja sldkfj alksdfj lkasjd flkajsdf
-      <br />
-      <br />
-      asldfjla jdflkja lskdflkasjdflk alksdjf lkasdflj al kdfj lkajdf lkajdflk asjdf
-      al skdfjlaksdfj lkasjdf lkajs dflkjasldkfjalskdfjalskdjflkasjd flkajs dlfkjaskdf
-      alskdfj laksjd flkasj dflk jalksdfjlkajsdlkfjalksd jflkasjd
-      flaks dflkajsd flkja sldkfj alksdfj lkasjd flkajsdf
-      <br />
-      <br />
-      asldfjla jdflkja lskdflkasjdflk alksdjf lkasdflj al kdfj lkajdf lkajdflk asjdf
-      al skdfjlaksdfj lkasjdf lkajs dflkjasldkfjalskdfjalskdjflkasjd flkajs dlfkjaskdf
-      alskdfj laksjd flkasj dflk jalksdfjlkajsdlkfjalksd jflkasjd
-      flaks dflkajsd flkja sldkfj alksdfj lkasjd flkajsdf
-    </Typography>
+    <Box />
   );
 }
 
