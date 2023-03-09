@@ -69,22 +69,22 @@ export default function Home () {
       <Box display="flex" justifyContent="center">
         <Box display="flex" flexDirection="column">
           <Box display="flex" flexDirection="column" style={{ gap: "16px" }}>
-          <Box display="flex" justifyContent="space-between">
-            <Typography variant="h5" className="interact disable-select" onClick={handleClickName}>
-              brandon wetzel
-            </Typography>
-          </Box>
-          <Box display="flex" style={{ gap: "16px" }}>
-            <Typography className="interact disable-select" onClick={handleClickAbout}>
-              about
-            </Typography>
-            <Typography className="interact disable-select" onClick={handleClickPortfolio}>
-              portfolio
-            </Typography>
-            <Typography className="interact disable-select" onClick={handleClickPortfolio}>
-              connect
-            </Typography>
-          </Box>
+            <Box display="flex" justifyContent="space-between">
+              <Typography variant="h5" className="interact disable-select" onClick={handleClickName}>
+                brandon wetzel
+              </Typography>
+            </Box>
+            <Box display="flex" style={{ gap: "16px" }}>
+              <Typography className="interact disable-select" onClick={handleClickAbout}>
+                about
+              </Typography>
+              <Typography className="interact disable-select" onClick={handleClickPortfolio}>
+                portfolio
+              </Typography>
+              <Typography className="interact disable-select" onClick={handleClickPortfolio}>
+                connect
+              </Typography>
+            </Box>
           </Box>
           <Box
             //p="16px"
@@ -175,5 +175,5 @@ export default function Home () {
         </Box>
       </Box>
     </PageContainer>
-);
+  );
 }
