@@ -1,20 +1,11 @@
 /*****************************************************************************
  * Import
  *****************************************************************************/
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import 'style/index.css';
-import 'style/app.scss';
-import App from './App';
+import { useMediaQuery } from "react-responsive";
 
 /*****************************************************************************
- * Render
+ * Hooks
  *****************************************************************************/
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+export const useMobileCheck = () => {
+  return useMediaQuery({ query: `(max-width: 760px)` })
+};

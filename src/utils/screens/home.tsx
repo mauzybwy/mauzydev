@@ -1,20 +1,16 @@
 /*****************************************************************************
  * Import
  *****************************************************************************/
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import 'style/index.css';
-import 'style/app.scss';
-import App from './App';
+import { Box } from "@mui/material";
+
+import { PageContainer } from "components/containers";
 
 /*****************************************************************************
- * Render
+ * Default Component
  *****************************************************************************/
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+export default function Home () {
+  return (
+    <PageContainer>
+    </PageContainer>
+  );
+}
