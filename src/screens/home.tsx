@@ -39,7 +39,7 @@ export default function Home () {
    *     scrollPosition / 2
    * )); */
 
-  let boxWidth = (170 + scrollPosition) > width - 64 ? width - 64 : 170 + scrollPosition;
+  let boxWidth = (250 + scrollPosition) > width - 64 ? width - 64 : 250 + scrollPosition;
   let boxHeight = 170 + (
     scrollPosition > 680 ? (
       170 + (680 - 360)/2
@@ -66,94 +66,112 @@ export default function Home () {
     <PageContainer
       //style={{ border: `10px solid ${colors.light}`, boxSizing: "border-box" }}
     >
-      <Box display="flex" flexDirection="column">
-        <Typography className="interact disable-select" onClick={handleClickName}>
-          brandon wetzel
-        </Typography>
-        <Box
-          //p="16px"
-          width={boxWidth}
-          height={boxHeight}
-          style={{
-            border: `2px solid ${colors.accent}`,
-            //backgroundColor: colors.mid,
-            backgroundClip: "content-box"
-          }}
-        >
-          <Box
-            ref={boxRef}
-            onScroll={handleScroll}
-            className="hide-scrollbar"
-            style={{ width:"100%", height:"100%", overflow:"hidden", scrollSnapType: "y mandatory" }}
-          >
-            <Box display="flex" justifyContent="center" alignItems="center" height="100%" width="100%">
-              <Typography className="disable-select">hello there :)</Typography>
-            </Box>
-            <Box
-              className="hide-scrollbar"
-              ref={aboutRef}
-              height="100%"
-              width="100%"
-              p="32px"
-              boxSizing="border-box"
-              style={{ overflow: "scroll" }}
-            >
-              <Typography>
-                Hi, i'm BRANDON and i write software. I spent 5 years working on embedded systems at TEXAS INSTRUMENTS,
-                and have since moved on to making WEB and MOBILE applications.
-              </Typography>
-            </Box>
-            <Box
-              className="hide-scrollbar"
-              ref={portfolioRef}
-              height="100%"
-              width="100%"
-              p="32px"
-              boxSizing="border-box"
-              style={{ overflow: "scroll" }}
-            >
-              <Typography>
-                asldfjla jdflkja lskdflkasjdflk alksdjf lkasdflj al kdfj lkajdf lkajdflk asjdf
-                al skdfjlaksdfj lkasjdf lkajs dflkjasldkfjalskdfjalskdjflkasjd flkajs dlfkjaskdf
-                alskdfj laksjd flkasj dflk jalksdfjlkajsdlkfjalksd jflkasjd
-                flaks dflkajsd flkja sldkfj alksdfj lkasjd flkajsdf
-
-                asldfjla jdflkja lskdflkasjdflk alksdjf lkasdflj al kdfj lkajdf lkajdflk asjdf
-                al skdfjlaksdfj lkasjdf lkajs dflkjasldkfjalskdfjalskdjflkasjd flkajs dlfkjaskdf
-                alskdfj laksjd flkasj dflk jalksdfjlkajsdlkfjalksd jflkasjd
-                flaks dflkajsd flkja sldkfj alksdfj lkasjd flkajsdf
-
-                asldfjla jdflkja lskdflkasjdflk alksdjf lkasdflj al kdfj lkajdf lkajdflk asjdf
-                al skdfjlaksdfj lkasjdf lkajs dflkjasldkfjalskdfjalskdjflkasjd flkajs dlfkjaskdf
-                alskdfj laksjd flkasj dflk jalksdfjlkajsdlkfjalksd jflkasjd
-                flaks dflkajsd flkja sldkfj alksdfj lkasjd flkajsdf
-
-                asldfjla jdflkja lskdflkasjdflk alksdjf lkasdflj al kdfj lkajdf lkajdflk asjdf
-                al skdfjlaksdfj lkasjdf lkajs dflkjasldkfjalskdfjalskdjflkasjd flkajs dlfkjaskdf
-                alskdfj laksjd flkasj dflk jalksdfjlkajsdlkfjalksd jflkasjd
-                flaks dflkajsd flkja sldkfj alksdfj lkasjd flkajsdf
-
-                asldfjla jdflkja lskdflkasjdflk alksdjf lkasdflj al kdfj lkajdf lkajdflk asjdf
-                al skdfjlaksdfj lkasjdf lkajs dflkjasldkfjalskdfjalskdjflkasjd flkajs dlfkjaskdf
-                alskdfj laksjd flkasj dflk jalksdfjlkajsdlkfjalksd jflkasjd
-                flaks dflkajsd flkja sldkfj alksdfj lkasjd flkajsdf
-
-                asldfjla jdflkja lskdflkasjdflk alksdjf lkasdflj al kdfj lkajdf lkajdflk asjdf
-                al skdfjlaksdfj lkasjdf lkajs dflkjasldkfjalskdfjalskdjflkasjd flkajs dlfkjaskdf
-                alskdfj laksjd flkasj dflk jalksdfjlkajsdlkfjalksd jflkasjd
-                flaks dflkajsd flkja sldkfj alksdfj lkasjd flkajsdf
-              </Typography>
-            </Box>
-            <Box height="1000px" />
+      <Box display="flex" justifyContent="center">
+        <Box display="flex" flexDirection="column">
+          <Box display="flex" flexDirection="column" style={{ gap: "16px" }}>
+          <Box display="flex" justifyContent="space-between">
+            <Typography variant="h5" className="interact disable-select" onClick={handleClickName}>
+              brandon wetzel
+            </Typography>
           </Box>
-        </Box>
-        <Box display="flex" justifyContent="space-between" width="100%">
-          <Typography className="interact disable-select" onClick={handleClickAbout}>
-            about
-          </Typography>
-          <Typography className="interact disable-select" onClick={handleClickPortfolio}>
-            portfolio
-          </Typography>
+          <Box display="flex" style={{ gap: "16px" }}>
+            <Typography className="interact disable-select" onClick={handleClickAbout}>
+              about
+            </Typography>
+            <Typography className="interact disable-select" onClick={handleClickPortfolio}>
+              portfolio
+            </Typography>
+            <Typography className="interact disable-select" onClick={handleClickPortfolio}>
+              connect
+            </Typography>
+          </Box>
+          </Box>
+          <Box
+            //p="16px"
+            width={boxWidth}
+            height={boxHeight}
+            style={{
+              border: `2px solid ${colors.accent}`,
+              //backgroundColor: colors.mid,
+              backgroundClip: "content-box"
+            }}
+          >
+            <Box
+              ref={boxRef}
+              onScroll={handleScroll}
+              className="hide-scrollbar"
+              style={{ width:"100%", height:"100%", overflow:"hidden", scrollSnapType: "y mandatory" }}
+            >
+              <Box display="flex" justifyContent="center" alignItems="center" height="100%" width="100%">
+                <Typography className="disable-select">hello there :)</Typography>
+              </Box>
+              <Box
+                className="hide-scrollbar"
+                ref={aboutRef}
+                height="100%"
+                width="100%"
+                p="32px"
+                boxSizing="border-box"
+                style={{ overflow: "scroll" }}
+              >
+                <Typography>
+                  Hi, i'm BRANDON and i write software. I have a BS in COMPUTER ENGINEERING from UNIVERSITY OF MARYLAND and
+                  spent 5 years working on embedded systems at TEXAS INSTRUMENTS.
+                  I have since moved on to making WEB and MOBILE applications.
+                </Typography>
+              </Box>
+              <Box
+                className="hide-scrollbar"
+                ref={portfolioRef}
+                height="100%"
+                width="100%"
+                p="32px"
+                boxSizing="border-box"
+                style={{ overflow: "scroll" }}
+              >
+                <Typography>
+                  asldfjla jdflkja lskdflkasjdflk alksdjf lkasdflj al kdfj lkajdf lkajdflk asjdf
+                  al skdfjlaksdfj lkasjdf lkajs dflkjasldkfjalskdfjalskdjflkasjd flkajs dlfkjaskdf
+                  alskdfj laksjd flkasj dflk jalksdfjlkajsdlkfjalksd jflkasjd
+                  flaks dflkajsd flkja sldkfj alksdfj lkasjd flkajsdf
+
+                  asldfjla jdflkja lskdflkasjdflk alksdjf lkasdflj al kdfj lkajdf lkajdflk asjdf
+                  al skdfjlaksdfj lkasjdf lkajs dflkjasldkfjalskdfjalskdjflkasjd flkajs dlfkjaskdf
+                  alskdfj laksjd flkasj dflk jalksdfjlkajsdlkfjalksd jflkasjd
+                  flaks dflkajsd flkja sldkfj alksdfj lkasjd flkajsdf
+
+                  asldfjla jdflkja lskdflkasjdflk alksdjf lkasdflj al kdfj lkajdf lkajdflk asjdf
+                  al skdfjlaksdfj lkasjdf lkajs dflkjasldkfjalskdfjalskdjflkasjd flkajs dlfkjaskdf
+                  alskdfj laksjd flkasj dflk jalksdfjlkajsdlkfjalksd jflkasjd
+                  flaks dflkajsd flkja sldkfj alksdfj lkasjd flkajsdf
+
+                  asldfjla jdflkja lskdflkasjdflk alksdjf lkasdflj al kdfj lkajdf lkajdflk asjdf
+                  al skdfjlaksdfj lkasjdf lkajs dflkjasldkfjalskdfjalskdjflkasjd flkajs dlfkjaskdf
+                  alskdfj laksjd flkasj dflk jalksdfjlkajsdlkfjalksd jflkasjd
+                  flaks dflkajsd flkja sldkfj alksdfj lkasjd flkajsdf
+
+                  asldfjla jdflkja lskdflkasjdflk alksdjf lkasdflj al kdfj lkajdf lkajdflk asjdf
+                  al skdfjlaksdfj lkasjdf lkajs dflkjasldkfjalskdfjalskdjflkasjd flkajs dlfkjaskdf
+                  alskdfj laksjd flkasj dflk jalksdfjlkajsdlkfjalksd jflkasjd
+                  flaks dflkajsd flkja sldkfj alksdfj lkasjd flkajsdf
+
+                  asldfjla jdflkja lskdflkasjdflk alksdjf lkasdflj al kdfj lkajdf lkajdflk asjdf
+                  al skdfjlaksdfj lkasjdf lkajs dflkjasldkfjalskdfjalskdjflkasjd flkajs dlfkjaskdf
+                  alskdfj laksjd flkasj dflk jalksdfjlkajsdlkfjalksd jflkasjd
+                  flaks dflkajsd flkja sldkfj alksdfj lkasjd flkajsdf
+                </Typography>
+              </Box>
+              <Box height="1000px" />
+            </Box>
+          </Box>
+          {/* <Box display="flex" style={{ gap: "16px" }}>
+              <Typography className="interact disable-select" onClick={handleClickAbout}>
+              about
+              </Typography>
+              <Typography className="interact disable-select" onClick={handleClickPortfolio}>
+              portfolio
+              </Typography>
+              </Box> */}
         </Box>
       </Box>
     </PageContainer>
