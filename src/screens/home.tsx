@@ -10,6 +10,10 @@ import { useMobileCheck } from "hooks/mobile";
 import { PageContainer } from "components/containers";
 import colors from "style/colors";
 
+var Scroll   = require('react-scroll');
+var Element  = Scroll.Element;
+var scroller = Scroll.scroller;
+
 /*****************************************************************************
  * Default Component
  *****************************************************************************/
@@ -32,7 +36,7 @@ export default function Home () {
     portfolio: 1200,
     connect: 610,
   }[state];
-  const boxWidth = _boxWidth > width - 64 ? width - 64 : _boxWidth;
+  const boxWidth = (isMobile && state !== "init") || _boxWidth > width - 64 ? width - 64 : _boxWidth;
 
   const _boxHeight = {
     init: 170,
@@ -40,7 +44,7 @@ export default function Home () {
     portfolio: 600,
     connect: 600,
   }[state];
-  const boxHeight = _boxHeight > height - 64 ? height - 64 : _boxHeight;
+  const boxHeight = (isMobile && state !== "init" ) || _boxHeight > height - 64 ? height - 200 : _boxHeight;
 
   const [body, setBody] = useState(<Box />);
   const _body = {
@@ -58,33 +62,63 @@ export default function Home () {
 
   const blah = [
     {
+      id: "blank",
       body: <Box />,
       ref: blankRef,
     },
     {
+      id: "init",
       body: <Init />,
       ref: initRef,
     },
     {
+      id: "about",
       body: <About />,
       ref: aboutRef,
     },
     {
+      id: "portfolio",
       body: <Portfolio />,
       ref: portfolioRef,
     },
     {
+      id: "connect",
       body: <Connect />,
       ref: connectRef,
     },
   ];
 
+  const scrollTo = (id) => ({
+    init: () => initRef.current.scrollIntoView({ behavior: "smooth" }),
+    about: () => aboutRef.current.scrollIntoView({ behavior: "smooth" }),
+    portfolio: () => portfolioRef.current.scrollIntoView({ behavior: "smooth" }),
+    connect: () => connectRef.current.scrollIntoView({ behavior: "smooth" }),
+  }[id]());
+
+  /* const scrollTo = () => scroller.scrollTo(id, {
+   *   duration: 500,
+   *   delay: 0,
+   *   smooth: "easeOutCubic",
+   *   containerId: 'container',
+   * }) */
+
+  const scrollIntoView = (id) => {
+    setIntervalX(() => {
+      scrollTo(id);    
+    }, 1, 100);
+  }
+
   useEffect(() => {
+    /* scrollIntoView(state); */
     setTimeout(() => {
       setBody(_body)
       setOpacity(1)
     }, 250);
   }, [state])
+
+  useEffect(() => {
+    scrollIntoView(state)
+  }, [height])
 
   
   useEffect(() => {
@@ -95,16 +129,7 @@ export default function Home () {
 
 
   const updateState = (tab) => {
-    const onClick = {
-      init: () => initRef.current.scrollIntoView({ behavior: "smooth" }),
-      about: () => aboutRef.current.scrollIntoView({ behavior: "smooth" }),
-      portfolio: () => portfolioRef.current.scrollIntoView({ behavior: "smooth" }),
-      connect: () => connectRef.current.scrollIntoView({ behavior: "smooth" }),
-    }[tab];
-
-    setIntervalX(() => {
-      onClick()
-    }, 1, 75);
+    scrollIntoView(tab);
 
     setState(tab)
     if (tab !== state) {
@@ -138,6 +163,7 @@ export default function Home () {
             </Box>
           </Box>
           <Box
+            id="container"
             width={boxWidth}
             height={boxHeight}
             style={{
@@ -149,9 +175,11 @@ export default function Home () {
             }}
           >
             {blah.map(item => (
+              <Element name={item.id} style={{ width: "100%", height: "100%" }}>
               <Container innerRef={item.ref}>
-                {item.body}
+                  {item.body}
               </Container>
+              </Element>
             ))}
           </Box>
         </Box>
