@@ -4,6 +4,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Box, Typography } from "@mui/material";
 
+import { setIntervalX } from "utils";
 import { useWindowDimensions } from "hooks/window";
 import { useMobileCheck } from "hooks/mobile";
 import { PageContainer } from "components/containers";
@@ -214,20 +215,4 @@ const Container = ({ children, innerRef }) => {
       {children}
     </Box>
   );
-}
-
-/*****************************************************************************
- * Helper Functions
- *****************************************************************************/
-
-function setIntervalX(callback, delay, repetitions) {
-  var x = 0;
-  var intervalID = window.setInterval(function () {
-
-    callback();
-
-    if (++x === repetitions) {
-      window.clearInterval(intervalID);
-    }
-  }, delay);
 }
