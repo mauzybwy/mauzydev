@@ -19,6 +19,7 @@ var scroller = Scroll.scroller;
  *****************************************************************************/
 export default function Home () {
   const isMobile = useMobileCheck();
+  const [noTouch, setNoTouch] = useState(true);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [state, setState] = useState<"init"|"about"|"portfolio"|"connect">("init");
   const [opacity, setOpacity] = useState(0);
@@ -109,11 +110,15 @@ export default function Home () {
   }
 
   useEffect(() => {
-    /* scrollIntoView(state); */
+    scrollIntoView(state);
     setTimeout(() => {
       setBody(_body)
       setOpacity(1)
     }, 250);
+    
+    setTimeout(() => {
+      setNoTouch(false);
+    }, 700);
   }, [state])
 
   useEffect(() => {
@@ -123,13 +128,18 @@ export default function Home () {
   
   useEffect(() => {
     setTimeout(() => {
+      setNoTouch(false);
+    }, 700);
+    
+    setTimeout(() => {
       initRef.current.scrollIntoView({ behavior: "smooth" })
     }, 100)
   }, [])
 
 
   const updateState = (tab) => {
-    scrollIntoView(tab);
+    /* scrollIntoView(tab); */
+    setNoTouch(true);
 
     setState(tab)
     if (tab !== state) {
@@ -140,6 +150,7 @@ export default function Home () {
   return (
     <PageContainer
       //style={{ border: `10px solid ${colors.light}`, boxSizing: "border-box" }}
+      style={{ pointerEvents: noTouch ? "none" : undefined, userSelect: noTouch ? "none" : undefined }}
     >
       <Box display="flex" justifyContent="center">
         <Box display="flex" flexDirection="column">
