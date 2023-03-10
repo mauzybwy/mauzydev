@@ -4,32 +4,24 @@
 import { useEffect, useRef, useState } from "react";
 import { Box, Typography } from "@mui/material";
 
-import { setIntervalX } from "utils";
 import { useWindowDimensions } from "hooks/window";
 import { useMobileCheck } from "hooks/mobile";
 import { PageContainer } from "components/containers";
 import colors from "style/colors";
 
-var Scroll   = require('react-scroll');
-var Element  = Scroll.Element;
-var scroller = Scroll.scroller;
+const TRANSLATE_START = 170;
+const TRANSLATE_AMT = 2000;
 
 /*****************************************************************************
  * Default Component
  *****************************************************************************/
 export default function Home () {
   const isMobile = useMobileCheck();
-  const [noTouch, setNoTouch] = useState(true);
-  const [scrollPosition, setScrollPosition] = useState(0);
   const [state, setState] = useState<"init"|"about"|"portfolio"|"connect">("init");
   const [opacity, setOpacity] = useState(0);
+  const [translate, setTranslate] = useState(TRANSLATE_START);
 
   const { width, height } = useWindowDimensions();
-
-  const handleScroll = (e) => {
-    const target = e.target as HTMLTextAreaElement;
-    console.log('Current scroll position:', target.scrollTop);
-  };
 
   const _boxWidth = {
     init: 250,
@@ -89,58 +81,29 @@ export default function Home () {
     },
   ];
 
-  const scrollTo = (id) => ({
-    init: () => initRef.current.scrollIntoView({ behavior: "smooth" }),
-    about: () => aboutRef.current.scrollIntoView({ behavior: "smooth" }),
-    portfolio: () => portfolioRef.current.scrollIntoView({ behavior: "smooth" }),
-    connect: () => connectRef.current.scrollIntoView({ behavior: "smooth" }),
-  }[id]());
-
-  /* const scrollTo = () => scroller.scrollTo(id, {
-   *   duration: 500,
-   *   delay: 0,
-   *   smooth: "easeOutCubic",
-   *   containerId: 'container',
-   * }) */
-
-  const scrollIntoView = (id) => {
-    setIntervalX(() => {
-      scrollTo(id);    
-    }, 1, 100);
-  }
+  useEffect(() => {
+    setTranslate(0);
+  }, [])
 
   useEffect(() => {
-    scrollIntoView(state);
+    if (translate !== TRANSLATE_START) {
+      setTranslate(TRANSLATE_AMT);
+    }
     setTimeout(() => {
       setBody(_body)
-      setOpacity(1)
+      /* setOpacity(1) */
     }, 250);
-    
-    setTimeout(() => {
-      setNoTouch(false);
-    }, 700);
   }, [state])
 
   useEffect(() => {
-    scrollIntoView(state)
-  }, [height])
-
-  
-  useEffect(() => {
-    setTimeout(() => {
-      setNoTouch(false);
-    }, 700);
-    
-    setTimeout(() => {
-      initRef.current.scrollIntoView({ behavior: "smooth" })
-    }, 100)
-  }, [])
-
+    if (translate) {
+      setTimeout(() => {
+        setTranslate(0);
+      }, 250)
+    }
+  }, [translate])
 
   const updateState = (tab) => {
-    /* scrollIntoView(tab); */
-    setNoTouch(true);
-
     setState(tab)
     if (tab !== state) {
       setOpacity(0)
@@ -150,7 +113,6 @@ export default function Home () {
   return (
     <PageContainer
       //style={{ border: `10px solid ${colors.light}`, boxSizing: "border-box" }}
-      style={{ pointerEvents: noTouch ? "none" : undefined, userSelect: noTouch ? "none" : undefined }}
     >
       <Box display="flex" justifyContent="center">
         <Box display="flex" flexDirection="column">
@@ -181,17 +143,22 @@ export default function Home () {
               border: `2px solid ${colors.accent}`,
               backgroundClip: "content-box",
               transition: "height 0.3s, width 0.6s",
+              //transition: "all 1s",
+              //transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1),",
               //transition: "all 0.5 ease-in",
               overflow: "hidden",
             }}
           >
-            {blah.map(item => (
-              <Element name={item.id} style={{ width: "100%", height: "100%" }}>
-              <Container innerRef={item.ref}>
-                  {item.body}
-              </Container>
-              </Element>
-            ))}
+            <Container innerRef={null} style={{ transform: `translateY(${translate}px)`, transition: "transform 1s" }}>
+              {body}
+            </Container>
+            {/* {blah.map(item => (
+                <Element name={item.id} style={{ width: "100%", height: "100%" }}>
+                <Container innerRef={item.ref}>
+                {item.body}
+                </Container>
+                </Element>
+                ))} */}
           </Box>
         </Box>
       </Box>
@@ -246,7 +213,7 @@ const Connect = () => {
   );
 }
 
-const Container = ({ children, innerRef }) => {
+const Container = ({ children, innerRef, style } : { children, innerRef?, style? }) => {
   return (
     <Box
       ref={innerRef}
@@ -262,6 +229,7 @@ const Container = ({ children, innerRef }) => {
         //opacity: opacity,
         transition: "all 0.25s",
         boxSizing: "border-box",
+        ...style,
       }}
     >
       {children}
