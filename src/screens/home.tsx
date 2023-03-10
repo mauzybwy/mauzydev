@@ -136,10 +136,11 @@ const Init = () => {
 
 const About = () => {
   return (
-    <Typography style={{ alignSelf: "start" }}>
-      Hi, i'm BRANDON and i write software. I have a BS in COMPUTER ENGINEERING from UNIVERSITY OF MARYLAND and
-      spent 5 years working on embedded systems at TEXAS INSTRUMENTS.
-      I have since moved on to making WEB and MOBILE applications.
+    <Typography style={{ alignSelf: "start", fontWeight: "700" }}>
+      hi, i'm BRANDON and i make software.
+      <br />
+      <br />
+      i enjoy the process of making web and mobile applications of all kind
     </Typography>
   );
 }
