@@ -18,7 +18,6 @@ const TRANSLATE_AMT = 2000;
 export default function Home () {
   const isMobile = useMobileCheck();
   const [state, setState] = useState<"init"|"about"|"portfolio"|"connect">("init");
-  const [opacity, setOpacity] = useState(0);
   const [translate, setTranslate] = useState(TRANSLATE_START);
 
   const { width, height } = useWindowDimensions();
@@ -47,40 +46,6 @@ export default function Home () {
     connect: <Connect />,
   }[state];
 
-  const blankRef = useRef(null);
-  const initRef = useRef(null);
-  const aboutRef = useRef(null);
-  const portfolioRef = useRef(null);
-  const connectRef = useRef(null);
-
-  const blah = [
-    {
-      id: "blank",
-      body: <Box />,
-      ref: blankRef,
-    },
-    {
-      id: "init",
-      body: <Init />,
-      ref: initRef,
-    },
-    {
-      id: "about",
-      body: <About />,
-      ref: aboutRef,
-    },
-    {
-      id: "portfolio",
-      body: <Portfolio />,
-      ref: portfolioRef,
-    },
-    {
-      id: "connect",
-      body: <Connect />,
-      ref: connectRef,
-    },
-  ];
-
   useEffect(() => {
     setTranslate(0);
   }, [])
@@ -91,7 +56,6 @@ export default function Home () {
     }
     setTimeout(() => {
       setBody(_body)
-      /* setOpacity(1) */
     }, 250);
   }, [state])
 
@@ -105,9 +69,7 @@ export default function Home () {
 
   const updateState = (tab) => {
     setState(tab)
-    if (tab !== state) {
-      setOpacity(0)
-    }
+    // !blw: other stuff here
   }
   
   return (
@@ -123,7 +85,7 @@ export default function Home () {
               </Typography>
             </Box>
             <Box display="flex" style={{ gap: "16px" }}>
-              {["about", "portfolio", "connect"].map(tab => (
+              {["portfolio", "about",  "connect"].map(tab => (
                 <Typography
                   key={tab}
                   className="interact disable-select"
@@ -179,13 +141,37 @@ const Init = () => {
 }
 
 const About = () => {
+  const tabs = [
+    {
+      id: "hi",
+      body: "i'm BRANDON and i make software. i've worked through all bands of the computing spectrum, and am currently focused on WEB and MOBILE applications.",
+    },
+    {
+      id: "tech",
+      body: "iOS - android - React - embedded - Linux"
+    },
+    {
+      id: "edu",
+      body: "BS Computer Engineering - University of Maryland, 2015",
+    },
+    {
+      id: "jobs",
+      body: "Texas Instruments Inc., AT&T",
+    }
+  ]
+  
   return (
-    <Typography style={{ alignSelf: "start", fontWeight: "700" }}>
-      hi, i'm BRANDON and i make software.
-      <br />
-      <br />
-      i enjoy the process of making web and mobile applications of all kind askdf ajsdf kjasdfk
-    </Typography>
+    <Box display="flex" style={{ alignSelf: "start" }}>
+      <Box display="flex" flexDirection="column" style={{ gap: "16px" }}>
+        {tabs.map(tab => (
+          <Typography style={{ alignSelf: "start", fontWeight: 400 }}>
+            <span style={{ fontWeight: 800 }}>~ {tab.id} ~</span>
+            <br />
+            {tab.body}
+          </Typography>
+        ))}
+      </Box>
+    </Box>
   );
 }
 
@@ -226,7 +212,6 @@ const Container = ({ children, innerRef, style } : { children, innerRef?, style?
       className="hide-scrollbar"
       style={{
         overflow: "scroll",
-        //opacity: opacity,
         transition: "all 0.25s",
         boxSizing: "border-box",
         ...style,
