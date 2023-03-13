@@ -14,6 +14,7 @@ import PageNotFound from "screens/page-not-found";
 
 /* Pages */
 import Home from "screens/home";
+import Test from "screens/test";
 
 /*****************************************************************************
  * Router
@@ -29,6 +30,10 @@ export default function Router() {
           <Route
             index
             element={<Home />}
+          />
+          <Route
+            path="test"
+            element={<Test />}
           />
           <Route
             path="*"
