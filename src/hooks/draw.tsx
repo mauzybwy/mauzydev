@@ -21,18 +21,21 @@ export const useSmudgeBox = (canvasRef, _width, _height) => {
       const wd2 = width / 2;
       const h2 = height / 2;
       ctx.globalAlpha = 1;
-      /* ctx.fillStyle = '#E06C4E'; */
+      ctx.fillStyle = '#E06C4E';
       /* ctx.fillStyle = "#E8B88C"; */
-      ctx.fillStyle = "#264652";
+      /* ctx.fillStyle = "#264652"; */
       ctx.fillRect(wd2 - _width / 2, h2 - _height / 2 + 35, _width, _height);
 
       /* ctx.fillStyle = "#264653"; */
       /* ctx.fillRect(0, 0, wd2, height); */
     }
-    reset();
+    /* setTimeout(() => { */
+      reset();
+    /* }, 750) */
 
     function getCanvasRelativePosition(e, canvas) {
       const rect = canvas.getBoundingClientRect();
+      console.log(e.clientX, e.clientY)
       return {
         x: (e.clientX - rect.left) / rect.width  * canvas.width,
         y: (e.clientY - rect.top ) / rect.height * canvas.height,
@@ -94,17 +97,17 @@ export const useSmudgeBox = (canvasRef, _width, _height) => {
     function createFeatherGradient(radius, hardness) {
       const innerRadius = Math.min(radius * hardness, radius - 1);
       const gradient = brushCtx.createRadialGradient(
-        0, 0, innerRadius,
+        0, 0, 0,
         0, 0, radius);
-      gradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
-      gradient.addColorStop(1, 'rgba(224, 108, 78, 1)');
+      gradient.addColorStop(0, '#E06C4E00');
+      gradient.addColorStop(1, '#264652');
       return gradient;
     }
 
     function updateBrushSettings() {
-      const radius = 50;
+      const radius = 69;
       const hardness = 0.1;
-      alpha = 0.1;
+      alpha = 0.2;
       featherGradient = createFeatherGradient(radius, hardness);
       brushCtx.canvas.width = radius * 2;
       brushCtx.canvas.height = radius * 2;
@@ -174,21 +177,17 @@ export const useSmudgeBox = (canvasRef, _width, _height) => {
         srcX, srcY, width, height,
         dstX, dstY, width, height);    
       
-      //feather(brushCtx);
+      feather(brushCtx);
     }
 
     function start(e) {
+      console.log("START");
       const pos = getCanvasRelativePosition(e, ctx.canvas);
       lastX = pos.x;
       lastY = pos.y;
-      lastForce = e.force || 1;
       drawing = true;
       updateBrush(pos.x, pos.y);
     }
-
-    setTimeout(() => {
-      /* drawing = true */
-    }, 1000)
     
     function draw(e) {
       if (!drawing) {
@@ -196,17 +195,17 @@ export const useSmudgeBox = (canvasRef, _width, _height) => {
         
         setTimeout(() => {
           start(e)
-        }, 1000)
+        }, 0)
 
         return
       }
+
       const pos = getCanvasRelativePosition(e, ctx.canvas);
-      const force = e.force || 1;
-      
+
       const line = setupLine(lastX, lastY, pos.x, pos.y);  
       for (let more = true; more;) {
         more = advanceLine(line);
-        ctx.globalAlpha = alpha * lerp(lastForce, force, line.u);
+        ctx.globalAlpha = alpha * lerp(lastForce, 1, line.u);
         ctx.drawImage(
           brushCtx.canvas,
           line.position[0] - brushCtx.canvas.width / 2,
@@ -215,25 +214,32 @@ export const useSmudgeBox = (canvasRef, _width, _height) => {
       } 
       lastX = pos.x;
       lastY = pos.y;
-      lastForce = force;
     }
 
     function stop() {
       drawing = false;
     }
 
-    /* start(); */
-    /* drawing = true; */
-    window.addEventListener('mousedown', start);
-    window.addEventListener('mousemove', draw);
-    window.addEventListener('mouseup', stop);
-    window.addEventListener('touchstart', e => {
-      e.preventDefault();
-      /* start(e.touches[0]); */
-    }, {passive: false});
-    window.addEventListener('touchmove', e => {
-      e.preventDefault();
-      draw(e.touches[0]);
-    }, {passive: false});
+    
+    const {width, height} = ctx.canvas;
+    let cX = (width / 2);
+    let cY = (height / 2);
+
+    window.addEventListener('mousemove', (e) => {
+      /* draw(e); */
+      cX = e.clientX;
+      cY = e.clientY;
+    });
+
+    setInterval(() => {
+      draw({ clientX: cX, clientY: cY })
+      cX = cX + Math.floor(Math.random() * 41) - 20
+      cY = cY + Math.floor(Math.random() * 41) - 20
+    }, 20)
+
+    return () => {
+      window.removeEventListener('mousemove', draw);
+      stop();
+    }
   }, []);
 }

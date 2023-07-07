@@ -20,9 +20,9 @@ export default function Home () {
   const isMobile = useMobileCheck();
   const [state, setState] = useState<"init"|"about"|"portfolio"|"connect">("init");
   const [translate, setTranslate] = useState(TRANSLATE_START);
+  const [stateChanged, setStateChanged] = useState(false);
 
-  /* const canvasRef = useRef(null);
-   * useSmudgeBox(canvasRef, 600, 400); */
+  const canvasRef = useRef(null);
 
   const { width, height } = useWindowDimensions();
 
@@ -41,6 +41,14 @@ export default function Home () {
     connect: 600,
   }[state];
   const boxHeight = (isMobile && state !== "init" ) || _boxHeight > height - 64 ? height - 200 : _boxHeight;
+
+  useSmudgeBox(canvasRef, boxWidth - 4, boxHeight - 4);
+
+  useEffect(() => {
+    if (!stateChanged && state !== "init") {
+      setStateChanged(true);
+    }
+  }, [state])
 
   const [body, setBody] = useState(<Box />);
   const _body = {
@@ -76,7 +84,13 @@ export default function Home () {
     // !blw: other stuff here
   }
   
-  return (
+  return false ? (
+    <canvas
+      //ref={canvasRef}
+      style={{ width: "100%", height: "100%", position: "absolute", top: 0, left: 0, opacity: 1 }}
+      //id="canvas"
+    />
+  ) : (
     <Fragment>
     <PageContainer
       //style={{ border: `10px solid ${colors.light}`, boxSizing: "border-box" }}
@@ -90,7 +104,7 @@ export default function Home () {
               </Typography>
             </Box>
             <Box display="flex" style={{ gap: "16px" }}>
-              {["portfolio", "about",  "connect"].map(tab => (
+              {["about", "portfolio", "connect"].map(tab => (
                 <Typography
                   key={tab}
                   className="interact disable-select"
@@ -108,7 +122,7 @@ export default function Home () {
             height={boxHeight}
             style={{
               border: `2px solid ${colors.accent}`,
-              backgroundColor: colors.dark,
+              backgroundColor: stateChanged ? colors.dark_C : colors.dark,
               backgroundClip: "content-box",
               transition: "height 0.3s, width 0.6s",
               //transition: "all 1s",
@@ -132,11 +146,11 @@ export default function Home () {
         </Box>
       </Box>
     </PageContainer>
-    {/* <canvas
-        ref={canvasRef}
-        style={{ width: "100%", height: "100%", position: "absolute", top: 0, left: 0, zIndex: -1, opacity: 0.3 }}
-        id="canvas"
-        /> */}
+    <canvas
+      ref={canvasRef}
+      style={{ width: "100%", height: "100%", position: "absolute", top: 0, left: 0, zIndex: -1, opacity: 1 }}
+      id="canvas"
+    />
     </Fragment>
 );
 }
@@ -169,7 +183,13 @@ const About = () => {
     },
     {
       id: "jobs",
-      body: "Texas Instruments Inc., AT&T",
+      body: (
+        <>
+          <a target="_blank" href="https://www.murmur.watch/">Murmur</a>,{" "}
+        <a target="_blank" href="https://www.murmur.watch/">Alluder</a>,
+        Texas Instruments Inc.
+        </>
+      ),
     }
   ]
   
@@ -189,8 +209,6 @@ const About = () => {
 }
 
 const Portfolio = () => {
-  const [selectedProject, setSelectedProject] = useState(null);
-  
   const projects = [
     {
       title: "murmur",
@@ -212,37 +230,42 @@ const Portfolio = () => {
       title: "scout",
       body: "",
     },
+    {
+      title: "drivesafe",
+      body: "",
+    },
   ]
 
-  useEffect(() => {
-    setTimeout(() => {
-      setSelectedProject("murmur")
-    }, 750)
-  }, [])
+  const [selectedProject, setSelectedProject] = useState(projects[0]);
   
   return (
     <Box display="flex" width="100%" height="100%">
-      <Typography style={{ alignSelf: "start" }}>
-        {projects.map(item => (
+      <Box display="flex" flexDirection="column">
+        {projects.map(project => (
           <Typography
-            onClick={() => setSelectedProject(item.title)}
+            onClick={() => setSelectedProject(project)}
             className="interact"
-            key={item.title}
+            key={project.title}
             variant="h5"
             sx={{
               opacity: "1 !important",
               transition: "font-size 0.5s",
-              fontsize: selectedProject === item.title ? "2rem" : "1.4rem",
+              fontWeight: selectedProject?.title === project?.title ? 700 : undefined,
+              fontSize: selectedProject?.title === project?.title ? "2rem" : "1.4rem",
               "&:hover": {
                 fontSize: "2rem",
               }
             }}
           >
-            {item.title}
+            {project.title}
           </Typography>
         ))}
-        {selectedProject}
-      </Typography>
+      </Box>
+      {selectedProject && (
+        <Box display="flex" justifyContent="flex-end" width="100%">
+        {selectedProject?.title}
+        </Box>
+      )}
     </Box>
   );
 }
