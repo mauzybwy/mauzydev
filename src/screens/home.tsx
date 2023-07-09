@@ -59,6 +59,7 @@ export default function Home () {
   }[state];
 
   useEffect(() => {
+    console.log("RNDER");
     setTranslate(0);
   }, [])
 
@@ -86,9 +87,10 @@ export default function Home () {
   
   return false ? (
     <canvas
-      //ref={canvasRef}
-      style={{ width: "100%", height: "100%", position: "absolute", top: 0, left: 0, opacity: 1 }}
-      //id="canvas"
+      ref={canvasRef}
+      style={{ width: "100%", height: "100%", position: "absolute", top: 0, left: 0, opacity: 1,   imageRendering: "pixelated",
+ }}
+      id="canvas"
     />
   ) : (
     <Fragment>
@@ -148,7 +150,7 @@ export default function Home () {
     </PageContainer>
     <canvas
       ref={canvasRef}
-      style={{ width: "100%", height: "100%", position: "absolute", top: 0, left: 0, zIndex: -1, opacity: 1 }}
+      style={{ width: "100%", height: "100%", position: "absolute", top: 0, left: 0, zIndex: -1, opacity: 1, imageRendering: "pixelated" }}
       id="canvas"
     />
     </Fragment>

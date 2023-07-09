@@ -7,14 +7,13 @@ import { useEffect } from "react";
  * Hooks
  *****************************************************************************/
 
-export const useSmudgeBox = (canvasRef, _width, _height) => {
+export const useSmudgeBox = (canvasRef, _width, _height, scaleDown = 10) => {
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    /* const brushDisplayCtx = brushDisplay.getContext('2d'); */
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth / scaleDown;
+    canvas.height = window.innerHeight / scaleDown;
 
     function reset() {
       const {width, height} = ctx.canvas;
@@ -24,7 +23,7 @@ export const useSmudgeBox = (canvasRef, _width, _height) => {
       ctx.fillStyle = '#E06C4E';
       /* ctx.fillStyle = "#E8B88C"; */
       /* ctx.fillStyle = "#264652"; */
-      ctx.fillRect(wd2 - _width / 2, h2 - _height / 2 + 35, _width, _height);
+      ctx.fillRect(wd2 - _width / scaleDown / 2, h2 - _height / scaleDown / 2 + 34 / scaleDown, _width / scaleDown, _height / scaleDown);
 
       /* ctx.fillStyle = "#264653"; */
       /* ctx.fillRect(0, 0, wd2, height); */
@@ -35,7 +34,7 @@ export const useSmudgeBox = (canvasRef, _width, _height) => {
 
     function getCanvasRelativePosition(e, canvas) {
       const rect = canvas.getBoundingClientRect();
-      console.log(e.clientX, e.clientY)
+      /* console.log(e.clientX, e.clientY) */
       return {
         x: (e.clientX - rect.left) / rect.width  * canvas.width,
         y: (e.clientY - rect.top ) / rect.height * canvas.height,
@@ -105,21 +104,12 @@ export const useSmudgeBox = (canvasRef, _width, _height) => {
     }
 
     function updateBrushSettings() {
-      const radius = 69;
+      const radius = 10;
       const hardness = 0.1;
       alpha = 0.2;
       featherGradient = createFeatherGradient(radius, hardness);
       brushCtx.canvas.width = radius * 2;
       brushCtx.canvas.height = radius * 2;
-      
-      {
-        /* const ctx = brushDisplayCtx; */
-        /* const {width, height} = ctx.canvas; */
-        /* ctx.clearRect(0, 0, width, height); */
-        /* ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`; */
-        /* ctx.fillRect(width / 2 - radius, height / 2 - radius, radius * 2, radius * 2); */
-        /* feather(ctx); */
-      }
     }
     updateBrushSettings();
     
@@ -134,7 +124,7 @@ export const useSmudgeBox = (canvasRef, _width, _height) => {
       ctx.restore();
     }
     
-    function updateBrush(x, y) {
+    function updateBrush(x, y, clearBrush) {
       let width = brushCtx.canvas.width;
       let height = brushCtx.canvas.height;
       let srcX = x - width / 2;
@@ -144,7 +134,9 @@ export const useSmudgeBox = (canvasRef, _width, _height) => {
       let dstY = (brushCtx.canvas.height - height) / 2;
 
       // clear the brush canvas
-      brushCtx.clearRect(0, 0, brushCtx.canvas.width, brushCtx.canvas.height);
+      if (clearBrush) {
+        brushCtx.clearRect(0, 0, brushCtx.canvas.width, brushCtx.canvas.height);
+      }
 
       // clip the rectangle to be
       // inside
@@ -186,7 +178,7 @@ export const useSmudgeBox = (canvasRef, _width, _height) => {
       lastX = pos.x;
       lastY = pos.y;
       drawing = true;
-      updateBrush(pos.x, pos.y);
+      updateBrush(pos.x, pos.y, true);
     }
     
     function draw(e) {
@@ -210,35 +202,59 @@ export const useSmudgeBox = (canvasRef, _width, _height) => {
           brushCtx.canvas,
           line.position[0] - brushCtx.canvas.width / 2,
           line.position[1] - brushCtx.canvas.height / 2);
-        updateBrush(line.position[0], line.position[1]);
+        updateBrush(line.position[0], line.position[1], true);
       } 
       lastX = pos.x;
       lastY = pos.y;
     }
 
     function stop() {
+      console.log("STOP");
       drawing = false;
     }
 
     
-    const {width, height} = ctx.canvas;
-    let cX = (width / 2);
-    let cY = (height / 2);
+    let w2 = canvas.width * scaleDown / 2;
+    let h2 = canvas.height * scaleDown / 2;
+    let cX = w2;
+    let cY = h2;
+    let mX = cX;
+    let mY = cY;
 
-    window.addEventListener('mousemove', (e) => {
+    /* console.log(w2, h2) */
+
+    const handleMouseMove = (e) => {
       /* draw(e); */
       cX = e.clientX;
       cY = e.clientY;
-    });
+      mX = e.clientX;
+      mY = e.clientY;
+
+      /* console.log(cX, cY, w2, h2) */
+    }
+
+    window.addEventListener('mousemove', handleMouseMove);
+
+    function getRandomSpread(num) {
+      return Math.floor(Math.random() * (num * 2 + 1)) - num;
+    }
+
+    function getRandomInRange(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) - Math.abs(min);
+    }
 
     setInterval(() => {
       draw({ clientX: cX, clientY: cY })
-      cX = cX + Math.floor(Math.random() * 41) - 20
-      cY = cY + Math.floor(Math.random() * 41) - 20
-    }, 20)
+
+      const amtX = getRandomSpread(10);
+      const amtY = getRandomSpread(10);
+
+      cX = cX + amtX;
+      cY = cY + amtY;
+    }, 10)
 
     return () => {
-      window.removeEventListener('mousemove', draw);
+      window.removeEventListener('mousemove', handleMouseMove);
       stop();
     }
   }, []);
