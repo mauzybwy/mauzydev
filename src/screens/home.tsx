@@ -14,7 +14,7 @@ import colors from "style/colors";
 import DrivesafeImg from "assets/drivesafe.png";
 import AlluderImg from "assets/alluder.png";
 import PitchImg from "assets/pitch.png";
-import MurmurImg from "assets/pitch.png";
+import MurmurImg from "assets/murmur.png";
 import ProductoImg from "assets/producto.png";
 import ScoutImg from "assets/pitch.png";
 
@@ -219,23 +219,24 @@ const About = () => {
 }
 
 const Portfolio = () => {
+  const isMobile = useMobileCheck();
+  
   const projects = [
-    /* {
-     *   title: "murmur",
-     *   body: "making filmn interactive",
-     *   imgSrc: MurmurImg,
-     *   url: "https://www.murmur.watch",
-     * }, */
     {
       title: "murmur",
-      body: "making film interactive",
-      imgSrc: AlluderImg,
-      /* url: "https://www.alluder.com", */
+      body: "asynchronous social tv.",
+      imgSrc: MurmurImg,
       url: "https://www.murmur.watch",
     },
     {
+      title: "alluder",
+      body: "making film interactive.",
+      imgSrc: AlluderImg,
+      url: "https://www.alluder.com",
+    },
+    {
       title: "producto",
-      body: "",
+      body: "help yourself.",
       imgSrc: ProductoImg,
       url: "https://www.producto.cc",
     },
@@ -259,7 +260,13 @@ const Portfolio = () => {
 
   const [selectedProject, setSelectedProject] = useState(projects[0]);
   
-  return (
+  return isMobile ? (
+    <Box display="flex" flexDirection="column" width="100%" height="100%" style={{ gap: "8px" }}>
+      {projects.map(project => (
+        <PortfolioItem key={project.title} project={project} style={{ height: "400px" }} />
+      ))}
+    </Box>
+  ) : (
     <Box display="flex" width="100%" height="100%">
       <Box display="flex" flexDirection="column" width="240px">
         {projects.map(project => (
@@ -283,71 +290,80 @@ const Portfolio = () => {
         ))}
       </Box>
       {selectedProject && (
-        <Box
-          display="flex"
-          position="relative"
-          justifyContent="flex-end"
-          width="100%"
-          onClick={() => selectedProject.url && window.open(selectedProject.url, "_blank")}
-          sx={{
-          ".hoverbaby": {
-            transition: "background-size 0.3s"
-          },
-          "&:hover .hoverbaby": {
-            backgroundSize: "110%",
-          }
-        }}>
-          {/* <Box width="100%" height="100%" style={{ background: "pink" }}> */}
-          {/* </Box> */}
-          <Box
-            width="100%"
-            height="100%"
-            className="hoverbaby"
-            sx={{
-              //opacity: 0.4,
-              backgroundImage: `url(${selectedProject?.imgSrc})`,
-              backgroundSize: "100%",
-              backgroundPosition: "center",
-              transition: "background-size 0.3s"
-            }}
-          />
-          <Box
-            position="absolute"
-            top={0} left={0}
-            width="100%"
-            height="100%"
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
-            alignItems="center"
-            sx={{
-              cursor: "pointer",
-              background: "#000A",
-              transition: "background 0.3s",
-              "&:hover": {
-                background: "#0004",
-              }
-            }}
-          >
-            <Typography variant="h4">
-              {selectedProject.title}
-            </Typography>
-            <Typography>
-              {selectedProject.body}
-            </Typography>
-          </Box>
-        </Box>
+        <PortfolioItem project={selectedProject} />
       )}
     </Box>
   );
 }
 
-const Connect = () => {
+const PortfolioItem = ({ project, style }: { project, style? }) => {
   return (
-    <Box display="flex" style={{ gap: "16px" }}>
-    <a href="mailto:blwetze@gmail.com" target="_blank">
+    <Box
+      display="flex"
+      position="relative"
+      justifyContent="flex-end"
+      width="100%"
+      onClick={() => project.url && window.open(project.url, "_blank")}
+      sx={{
+                  overflow: "hidden",
+        "&:hover .hoverbaby": {
+          transform: "scale(1.1,1.1)",
+        },
+        ...style,
+      }}>
+      <Box
+        width="100%"
+        height="100%"
+        className="hoverbaby"
+        sx={{
+          //opacity: 0.4,
+          backgroundImage: `url(${project?.imgSrc})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          transition: "transform 0.3s"
+        }}
+      />
+      <Box
+        position="absolute"
+        top={0} left={0}
+        width="100%"
+        height="100%"
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        sx={{
+          cursor: "pointer",
+          background: "#000A",
+          transition: "background 0.3s",
+          "&:hover": {
+            background: "#0004",
+          }
+        }}
+      >
+        <Typography variant="h4">
+          {project.title}
+        </Typography>
         <Typography>
-          email
+          {project.body}
+        </Typography>
+      </Box>
+    </Box>
+  );
+}
+
+const Connect = () => {
+  const isMobile = useMobileCheck();
+  
+  return (
+    <Box
+      display="flex"
+      flexDirection={isMobile ? "column" : "row"}
+      style={{ gap: "16px" }}
+    >
+      <a href="mailto:blwetze@gmail.com" target="_blank">
+        <Typography>
+          blwetze@gmail.com
         </Typography>
       </a>
       <a href="https://github.com/mauzybwy" target="_blank">
