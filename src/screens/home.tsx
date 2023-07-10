@@ -102,65 +102,65 @@ export default function Home () {
     />
   ) : (
     <Fragment>
-    <PageContainer
-      //style={{ border: `10px solid ${colors.light}`, boxSizing: "border-box" }}
-    >
-      <Box display="flex" justifyContent="center">
-        <Box display="flex" flexDirection="column">
-          <Box display="flex" flexDirection="column" style={{ gap: "16px" }}>
-            <Box display="flex" justifyContent="space-between">
-              <Typography variant="h5" className="interact disable-select" onClick={() => updateState("init")}>
-                brandon wetzel
-              </Typography>
-            </Box>
-            <Box display="flex" style={{ gap: "16px" }}>
-              {["about", "portfolio", "connect"].map(tab => (
-                <Typography
-                  key={tab}
-                  className="interact disable-select"
-                  onClick={() => updateState(tab)}
-                  style={{ textDecoration: state === tab ? "underline" : undefined }}
-                >
-                  {tab}
+      <PageContainer
+        //style={{ border: `10px solid ${colors.light}`, boxSizing: "border-box" }}
+      >
+        <Box display="flex" justifyContent="center">
+          <Box display="flex" flexDirection="column">
+            <Box display="flex" flexDirection="column" style={{ gap: "16px" }}>
+              <Box display="flex" justifyContent="space-between">
+                <Typography variant="h5" className="interact disable-select" onClick={() => updateState("init")}>
+                  brandon wetzel
                 </Typography>
-              ))}
+              </Box>
+              <Box display="flex" style={{ gap: "16px" }}>
+                {["about", "portfolio", "connect"].map(tab => (
+                  <Typography
+                    key={tab}
+                    className="interact disable-select"
+                    onClick={() => updateState(tab)}
+                    style={{ textDecoration: state === tab ? "underline" : undefined }}
+                  >
+                    {tab}
+                  </Typography>
+                ))}
+              </Box>
             </Box>
-          </Box>
-          <Box
-            id="container"
-            width={boxWidth}
-            height={boxHeight}
-            style={{
-              border: `2px solid ${colors.accent}`,
-              backgroundColor: stateChanged ? colors.dark_C : colors.dark,
-              backgroundClip: "content-box",
-              transition: "height 0.3s, width 0.6s",
-              //transition: "all 1s",
-              //transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1),",
-              //transitionTimingFunction: "cubic-bezier(0.175, 0.885, 0.32, 1.1)",
-              //transition: "all 0.5 ease-in",
-              overflow: "hidden",
-            }}
-          >
-            <Container innerRef={null} style={{ transform: `translateY(${translate}px)`, transition: "transform 1s" }}>
-              {body}
-            </Container>
-            {/* {blah.map(item => (
-                <Element name={item.id} style={{ width: "100%", height: "100%" }}>
-                <Container innerRef={item.ref}>
-                {item.body}
-                </Container>
-                </Element>
-                ))} */}
+            <Box
+              id="container"
+              width={boxWidth}
+              height={boxHeight}
+              style={{
+                border: `2px solid ${colors.accent}`,
+                backgroundColor: stateChanged ? colors.dark_C : colors.dark,
+                backgroundClip: "content-box",
+                transition: "height 0.3s, width 0.6s",
+                //transition: "all 1s",
+                //transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1),",
+                //transitionTimingFunction: "cubic-bezier(0.175, 0.885, 0.32, 1.1)",
+                //transition: "all 0.5 ease-in",
+                overflow: "hidden",
+              }}
+            >
+              <Container innerRef={null} style={{ transform: `translateY(${translate}px)`, transition: "transform 1s" }}>
+                {body}
+              </Container>
+              {/* {blah.map(item => (
+                  <Element name={item.id} style={{ width: "100%", height: "100%" }}>
+                  <Container innerRef={item.ref}>
+                  {item.body}
+                  </Container>
+                  </Element>
+                  ))} */}
+            </Box>
           </Box>
         </Box>
-      </Box>
-    </PageContainer>
-    <canvas
-      ref={canvasRef}
-      style={{ width: "100%", height: "100%", position: "absolute", top: 0, left: 0, zIndex: -1, opacity: 1, imageRendering: "pixelated" }}
-      id="canvas"
-    />
+      </PageContainer>
+      <canvas
+        ref={canvasRef}
+        style={{ width: "100%", height: "100%", position: "absolute", top: 0, left: 0, zIndex: -1, opacity: 1, imageRendering: "pixelated" }}
+        id="canvas"
+      />
     </Fragment>
 );
 }
