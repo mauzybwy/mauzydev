@@ -8,7 +8,15 @@ import { useSmudgeBox } from "hooks/draw";
 import { useWindowDimensions } from "hooks/window";
 import { useMobileCheck } from "hooks/mobile";
 import { PageContainer } from "components/containers";
+import SmartGrid from "components/smart-grid";
 import colors from "style/colors";
+
+import DrivesafeImg from "assets/drivesafe.png";
+import AlluderImg from "assets/alluder.png";
+import PitchImg from "assets/pitch.png";
+import MurmurImg from "assets/pitch.png";
+import ProductoImg from "assets/producto.png";
+import ScoutImg from "assets/pitch.png";
 
 const TRANSLATE_START = 170;
 const TRANSLATE_AMT = 2000;
@@ -38,7 +46,7 @@ export default function Home () {
     init: 170,
     about: 340,
     portfolio: 600,
-    connect: 600,
+    connect: 100,
   }[state];
   const boxHeight = (isMobile && state !== "init" ) || _boxHeight > height - 64 ? height - 200 : _boxHeight;
 
@@ -173,7 +181,7 @@ const About = () => {
   const tabs = [
     {
       id: "hi",
-      body: "i'm BRANDON and i make software. i've worked through all bands of the computing spectrum, and am currently focused on WEB and MOBILE applications.",
+      body: "i'm BRANDON. i've worked through all bands of the computing spectrum, and am currently focused on WEB and MOBILE applications.",
     },
     {
       id: "tech",
@@ -184,12 +192,12 @@ const About = () => {
       body: "BS Computer Engineering - University of Maryland, 2015",
     },
     {
-      id: "jobs",
+      id: "exp",
       body: (
         <>
-          <a target="_blank" href="https://www.murmur.watch/">Murmur</a>,{" "}
-        <a target="_blank" href="https://www.murmur.watch/">Alluder</a>,
-        Texas Instruments Inc.
+          texas instruments,{" "}
+          <a target="_blank" href="https://www.murmur.watch/">murmur</a>,{" "}
+        <a target="_blank" href="https://www.alluder.com/">alluder</a>
         </>
       ),
     }
@@ -212,29 +220,40 @@ const About = () => {
 
 const Portfolio = () => {
   const projects = [
+    /* {
+     *   title: "murmur",
+     *   body: "making filmn interactive",
+     *   imgSrc: MurmurImg,
+     *   url: "https://www.murmur.watch",
+     * }, */
     {
       title: "murmur",
-      body: "create and experience synchronized commentary for your favorite movies and shows",
-    },
-    {
-      title: "alluder",
-      body: "",
+      body: "making film interactive",
+      imgSrc: AlluderImg,
+      /* url: "https://www.alluder.com", */
+      url: "https://www.murmur.watch",
     },
     {
       title: "producto",
       body: "",
+      imgSrc: ProductoImg,
+      url: "https://www.producto.cc",
     },
     {
       title: "pitch",
-      body: ""
+      body: "camping, on-demand.",
+      imgSrc: PitchImg,
+      url: "https://play.google.com/store/apps/details?id=com.mcc.pitch.beta",
     },
-    {
-      title: "scout",
-      body: "",
-    },
+    /* {
+     *   title: "scout",
+     *   body: "",
+     *   imgSrc: ScoutImg,
+     * }, */
     {
       title: "drivesafe",
-      body: "",
+      body: "coming soon.",
+      imgSrc: DrivesafeImg,
     },
   ]
 
@@ -242,7 +261,7 @@ const Portfolio = () => {
   
   return (
     <Box display="flex" width="100%" height="100%">
-      <Box display="flex" flexDirection="column">
+      <Box display="flex" flexDirection="column" width="240px">
         {projects.map(project => (
           <Typography
             onClick={() => setSelectedProject(project)}
@@ -264,8 +283,59 @@ const Portfolio = () => {
         ))}
       </Box>
       {selectedProject && (
-        <Box display="flex" justifyContent="flex-end" width="100%">
-        {selectedProject?.title}
+        <Box
+          display="flex"
+          position="relative"
+          justifyContent="flex-end"
+          width="100%"
+          onClick={() => selectedProject.url && window.open(selectedProject.url, "_blank")}
+          sx={{
+          ".hoverbaby": {
+            transition: "background-size 0.3s"
+          },
+          "&:hover .hoverbaby": {
+            backgroundSize: "110%",
+          }
+        }}>
+          {/* <Box width="100%" height="100%" style={{ background: "pink" }}> */}
+          {/* </Box> */}
+          <Box
+            width="100%"
+            height="100%"
+            className="hoverbaby"
+            sx={{
+              //opacity: 0.4,
+              backgroundImage: `url(${selectedProject?.imgSrc})`,
+              backgroundSize: "100%",
+              backgroundPosition: "center",
+              transition: "background-size 0.3s"
+            }}
+          />
+          <Box
+            position="absolute"
+            top={0} left={0}
+            width="100%"
+            height="100%"
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+            sx={{
+              cursor: "pointer",
+              background: "#000A",
+              transition: "background 0.3s",
+              "&:hover": {
+                background: "#0004",
+              }
+            }}
+          >
+            <Typography variant="h4">
+              {selectedProject.title}
+            </Typography>
+            <Typography>
+              {selectedProject.body}
+            </Typography>
+          </Box>
         </Box>
       )}
     </Box>
@@ -274,9 +344,23 @@ const Portfolio = () => {
 
 const Connect = () => {
   return (
-    <Typography style={{ alignSelf: "start" }}>
-      CONNECT
-    </Typography>
+    <Box display="flex" style={{ gap: "16px" }}>
+    <a href="mailto:blwetze@gmail.com" target="_blank">
+        <Typography>
+          email
+        </Typography>
+      </a>
+      <a href="https://github.com/mauzybwy" target="_blank">
+        <Typography>
+          github
+        </Typography>
+      </a>
+      <a href="https://www.linkedin.com/in/brandon-wetzel-ab793981/" target="_blank">
+        <Typography>
+          linkedin
+        </Typography>
+      </a>
+    </Box>
   );
 }
 
